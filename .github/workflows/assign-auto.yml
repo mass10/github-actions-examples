@@ -1,8 +1,9 @@
-name: Assign auto
+name: Pull Request を自動的にアサインする
 
 on:
     pull_request:
-        types: opened # プルリクを作成したタイミングだけで動かす
+        # Pull Request もしくは Draft を作成したときに動かします。
+        types: "opened"
 
 jobs:
     assign:
@@ -11,7 +12,8 @@ jobs:
         steps:
           - name: Set assignees
             env:
-                ASSIGNEES: "${{ github.actor }}" # 変えたければここを変える
+                # 誰にアサインするのか
+                ASSIGNEES: "${{ github.actor }}"
             run: |
                 assignee_count=$(cat ${{ github.event_path }} | jq '.pull_request.assignees | length')
                 if [[ 0 == $assignee_count ]]; then
