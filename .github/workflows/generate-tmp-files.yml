@@ -16,7 +16,6 @@ jobs:
           - name: Show Environment
             run: |
                 env
-                git branch
 
     # ========== コミットファイルを自動的に追加します ==========
     generate-tmp:
