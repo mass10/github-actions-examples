@@ -27,7 +27,7 @@ jobs:
 
                 echo
                 echo "[INFO] --- ディレクトリ一覧 ---"
-                find "$RUNNER_WORKSPACE" -type d | xargs /bin/ls -ldF --full-time
+                find "$RUNNER_WORKSPACE" | xargs /bin/ls -ldF --full-time
 
                 echo
                 echo "[INFO] --- GitHub ファイル一覧 ---"
@@ -35,7 +35,7 @@ jobs:
 
                 echo
                 echo "[INFO] --- 作業ディレクトリの確認 ---"
-                find / -type f -name main.go -ls
+                find ~/ -type f -name main.go -ls
 
     # ========== コミットファイルを自動的に追加します ==========
     generate-tmp:
