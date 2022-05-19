@@ -1,4 +1,4 @@
-name: Pull Request を自動的にアサインする
+name: コミットファイルを自動的に追加する
 
 on:
     pull_request:
