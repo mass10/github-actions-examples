@@ -26,6 +26,10 @@ jobs:
                 echo "[INFO] --- ディレクトリ一覧 ---"
                 find "$RUNNER_WORKSPACE" -type d | xargs /bin/ls -ldF --full-time
 
+                echo
+                echo "[INFO] --- GitHub ファイル一覧 ---"
+                find "$GITHUB_ENV" -type f | xargs /bin/ls -ldF --full-time
+
     # ========== コミットファイルを自動的に追加します ==========
     generate-tmp:
         name: コミットファイルを自動的に追加します
