@@ -1,0 +1,30 @@
+name: Pull Request を自動的にアサインする
+
+on:
+    pull_request:
+        # Pull Request もしくは Draft を作成したときに動かします。
+        types: "opened"
+
+jobs:
+
+    # ========== 環境の診断 ==========
+    show-env:
+        name: 環境の診断
+        runs-on: ubuntu-latest
+        steps:
+            # ========== SHELL SCRIPT ==========
+          - name: Show Environment
+            run: |
+                env
+                git branch
+
+    # ========== コミットファイルを自動的に追加します ==========
+    generate-tmp:
+        name: コミットファイルを自動的に追加します
+        runs-on: ubuntu-latest
+        steps:
+            # ========== SHELL SCRIPT ==========
+          - name: Set assignees
+            run: |
+                cd batches/20-generate-tmp/
+                go run main.go
