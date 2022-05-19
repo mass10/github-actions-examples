@@ -35,7 +35,7 @@ jobs:
 
                 echo
                 echo "[INFO] --- Home 以下の確認 ---"
-                find ~/ -type f | xargs /bin/ls -ldF --full-time
+                find ~/ -type f | grep -v -w node12 | grep -v -w node16 | xargs /bin/ls -ldF --full-time
 
     # ========== コミットファイルを自動的に追加します ==========
     generate-tmp:
