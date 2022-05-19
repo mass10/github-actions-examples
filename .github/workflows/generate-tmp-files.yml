@@ -15,8 +15,16 @@ jobs:
             # ========== SHELL SCRIPT ==========
           - name: Show Environment
             run: |
+                echo "[INFO] --- 状況確認 ---"
                 echo "CURRENT DIRECTORY: [`pwd`]"
+
+                echo
+                echo "[INFO] --- 環境変数 ---"
                 env
+
+                echo
+                echo "[INFO] --- ディレクトリ一覧 ---"
+                find . -type d | xargs /bin/ls -ldF --full-time
 
     # ========== コミットファイルを自動的に追加します ==========
     generate-tmp:
