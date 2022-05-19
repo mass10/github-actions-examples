@@ -6,6 +6,8 @@ on:
         types: "opened"
 
 jobs:
+
+    # ========== 自動的にアサインする ==========
     assign:
         name: Set assignees
         runs-on: ubuntu-latest
