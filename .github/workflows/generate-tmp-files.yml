@@ -4,6 +4,9 @@ on:
     pull_request:
         # Pull Request もしくは Draft を作成したときに動かします。
         types: "opened"
+    push:
+        branches:
+          - 'mass10/**'
 
 jobs:
 
