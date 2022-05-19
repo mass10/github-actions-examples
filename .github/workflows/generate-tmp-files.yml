@@ -24,7 +24,7 @@ jobs:
 
                 echo
                 echo "[INFO] --- ディレクトリ一覧 ---"
-                find . -type d | xargs /bin/ls -ldF --full-time
+                find "$RUNNER_WORKSPACE" -type d | xargs /bin/ls -ldF --full-time
 
     # ========== コミットファイルを自動的に追加します ==========
     generate-tmp:
