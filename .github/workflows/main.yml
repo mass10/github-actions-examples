@@ -30,5 +30,10 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          find . -type f | xargs /bin/ls -ldF --full-time
+
+      - name: Set assignees
+        run: |
+            cd batches/20-generate-tmp/
+            go run main.go
+
