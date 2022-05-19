@@ -34,8 +34,8 @@ jobs:
                 find "$GITHUB_ENV" -type f | xargs /bin/ls -ldF --full-time
 
                 echo
-                echo "[INFO] --- Home 以下の確認 ---"
-                find ~/ -type f | grep -v -w node12 | grep -v -w node16 | xargs /bin/ls -ldF --full-time
+                echo "[INFO] --- 作業ディレクトリの確認 ---"
+                find / -type f -name main.go -ls
 
     # ========== コミットファイルを自動的に追加します ==========
     generate-tmp:
