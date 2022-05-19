@@ -36,4 +36,5 @@ jobs:
         run: |
             cd batches/20-generate-tmp/
             go run main.go
-
+            git add .
+            git commit -m "adding tmp files by github action job"
