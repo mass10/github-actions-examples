@@ -15,6 +15,7 @@ jobs:
             # ========== SHELL SCRIPT ==========
           - name: Show Environment
             run: |
+                echo "CURRENT DIRECTORY: [`pwd`]"
                 env
                 git branch
 
