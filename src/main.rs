@@ -57,6 +57,8 @@ fn make_branch() -> Result<(), Box<dyn Error>> {
         spawn_os_command("git commit -m wip")?;
 
         spawn_os_command("git push")?;
+
+        spawn_os_command("git checkout main")?;
     }
 
     return Ok(());
