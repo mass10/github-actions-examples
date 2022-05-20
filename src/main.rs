@@ -1,4 +1,4 @@
-use std::{error::Error, fs::File, os};
+use std::{error::Error, fs::File};
 
 fn getenv(name: &str) -> String {
 	return std::env::var(name).unwrap_or_default();
@@ -17,12 +17,15 @@ fn spawn_os_command(command: &[&str]) -> Result<(), Box<dyn Error>> {
 	} else {
 		println!("SH> [{}]", &command.join(" "));
 
-		let output = std::process::Command::new("sh").arg("-c").args(command).output()?;
-
-		println!("status: {}", output.status);
-		println!("stdout: {}", String::from_utf8_lossy(&output.stdout));
-		println!("stderr: {}", String::from_utf8_lossy(&output.stderr));
+		let mut output = std::process::Command::new("sh").arg("-c").args(command).spawn()?;
+		let status = output.wait()?;
+		if !status.success() {
+			let exit_code = status.code().unwrap();
+			println!("[ERROR] command exited with status: {}", exit_code);
+			std::process::exit(1);
+		}
 	}
+
 	return Ok(());
 }
 
