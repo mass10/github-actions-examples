@@ -27,7 +27,11 @@ jobs:
 
             # Runs a single command using the runners shell
           - name: Run a one-line script
-            run: echo Hello, world!
+            run: |
+                echo GITHUB_TOKEN: [$GITHUB_TOKEN]
+                echo GITHUB_REPOSITORY: [$GITHUB_REPOSITORY]
+                echo GITHUB_ACTOR: [$GITHUB_ACTOR]
+                echo GITHUB_REF: [$GITHUB_REF]
 
             # Runs a set of commands using the runners shell
           - name: Run a multi-line script
@@ -50,6 +54,6 @@ jobs:
 
                 git commit -m "adding tmp files by github action job"
 
-                git pull origin HEAD:${GITHUB_REF}
+                # git pull origin HEAD:${GITHUB_REF}
 
                 git push origin HEAD:${GITHUB_REF}
