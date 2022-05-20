@@ -83,7 +83,7 @@ fn execute_when_push() -> Result<(), Box<dyn Error>> {
 	let github_actor = getenv("GITHUB_ACTOR");
 
 	let url = format!(
-		"https://github-actions:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}",
+		"https://github-actions:{GITHUB_TOKEN}@github.com/{GITHUB_REPOSITORY}",
 		GITHUB_TOKEN = github_token,
 		GITHUB_REPOSITORY = github_repository
 	);
