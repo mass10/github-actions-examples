@@ -83,14 +83,18 @@ fn make_branch() -> Result<(), Box<dyn Error>> {
 
 fn execute_when_push() -> Result<(), Box<dyn Error>> {
 	let github_token = getenv("GITHUB_TOKEN");
+	println!("[DEBUG] token: {}", github_token);
 	let github_repository = getenv("GITHUB_REPOSITORY");
+	println!("[DEBUG] github_repository: {}", github_repository);
 	let github_actor = getenv("GITHUB_ACTOR");
+	println!("[DEBUG] github_actor: {}", github_actor);
 
 	let url = format!(
 		"https://github-actions:{GITHUB_TOKEN}@github.com/{GITHUB_REPOSITORY}",
 		GITHUB_TOKEN = github_token,
 		GITHUB_REPOSITORY = github_repository
 	);
+	println!("[DEBUG] url: {}", url);
 	spawn_os_command(&["git", "remote", "set-url", "origin", &url])?;
 
 	spawn_os_command(&["git", "config", "--global", "user.name", &github_actor])?;
