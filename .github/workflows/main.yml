@@ -43,7 +43,7 @@ jobs:
 
             go run main.go
 
-            git pull
+            # git pull
 
             git add .
 
