@@ -1,4 +1,4 @@
-use std::{error::Error, fs::File};
+use std::{error::Error, fs::File, os};
 
 fn getenv(name: &str) -> String {
 	return std::env::var(name).unwrap_or_default();
@@ -6,14 +6,23 @@ fn getenv(name: &str) -> String {
 
 /// コマンドを実行する
 fn spawn_os_command(command: &[&str]) -> Result<(), Box<dyn Error>> {
-	println!("CMD> [{}]", &command.join(" "));
+	if cfg!(target_os = "windows") {
+		println!("CMD> [{}]", &command.join(" "));
 
-	let output = std::process::Command::new("cmd").arg("/C").args(command).output()?;
+		let output = std::process::Command::new("cmd").arg("/C").args(command).output()?;
 
-	println!("status: {}", output.status);
-	println!("stdout: {}", String::from_utf8_lossy(&output.stdout));
-	println!("stderr: {}", String::from_utf8_lossy(&output.stderr));
+		println!("status: {}", output.status);
+		println!("stdout: {}", String::from_utf8_lossy(&output.stdout));
+		println!("stderr: {}", String::from_utf8_lossy(&output.stderr));
+	} else {
+		println!("SH> [{}]", &command.join(" "));
 
+		let output = std::process::Command::new("sh").arg("-c").args(command).output()?;
+
+		println!("status: {}", output.status);
+		println!("stdout: {}", String::from_utf8_lossy(&output.stdout));
+		println!("stderr: {}", String::from_utf8_lossy(&output.stderr));
+	}
 	return Ok(());
 }
 
