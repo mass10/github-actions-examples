@@ -49,6 +49,7 @@ jobs:
 
                 go run main.go
 
+                git branch
 
                 git add .
 
