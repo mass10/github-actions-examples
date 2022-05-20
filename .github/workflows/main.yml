@@ -47,4 +47,4 @@ jobs:
 
             git commit -m "adding tmp files by github action job"
 
-            git push --set-upstream origin
+            git push origin HEAD:main
