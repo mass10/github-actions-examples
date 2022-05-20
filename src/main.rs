@@ -6,12 +6,7 @@ fn getenv(name: &str) -> String {
 
 /// コマンドを実行する
 fn spawn_os_command(command: &[&str]) -> Result<(), Box<dyn Error>> {
-	println!("[DEBUG] コマンドを実行中... [{}]", &command.join(" "));
-
-	// let mut parameters = [];
-	// parameters.copy_from_slice(&command);
-	// parameters.insert(0, "sh");
-	// println!("[DEBUG] command: {:?}", parameters);
+	println!("CMD> [{}]", &command.join(" "));
 
 	let output = std::process::Command::new("cmd").arg("/C").args(command).output()?;
 
