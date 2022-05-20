@@ -2,6 +2,8 @@ use std::{error::Error, fs::File};
 
 /// コマンドを実行する
 fn spawn_os_command(command: &str) -> Result<(), Box<dyn Error>> {
+    println!("[DEBUG] コマンドを実行中... {}", command);
+
     let output = std::process::Command::new("cmd")
         .args(&["/C", command])
         .output()?;
@@ -29,7 +31,8 @@ fn create_text_file(path: &str, content: &str) -> Result<(), Box<dyn Error>> {
 /// タイムスタンプ
 pub fn get_current_timestamp() -> String {
     let date = chrono::Local::now();
-    return format!("{}", date.format("%Y-%m-%d %H:%M:%S%.3f"));
+    let t = date.format("%Y-%m-%d %H:%M:%S%.3f");
+    return format!("{}", t);
 }
 
 /// タイムスタンプ文字列を返します。
@@ -38,7 +41,8 @@ pub fn get_current_timestamp() -> String {
 /// タイムスタンプ
 pub fn get_current_timestamp2() -> String {
     let date = chrono::Local::now();
-    return format!("{}", date.format("%Y%m%d-%H%M%S%"));
+    let t = date.format("%Y%m%d-%H%M%S");
+    return format!("{}", t);
 }
 
 /// ブランチを作成します。
@@ -84,19 +88,16 @@ fn execute(request: &str) -> Result<(), Box<dyn Error>> {
         return make_branch();
     }
 
-    panic!("Invalid request: {}", request);
+    panic!("ERROR: Invalid request: {}", request);
 }
 
 /// アプリケーションのエントリポイントです。
 fn main() {
     let args = std::env::args().skip(1).collect::<Vec<_>>();
-    if args.len() == 0 {
-        return;
-    }
-    let request = &args[0];
-    let result = execute(&request);
+    let request = if 0 < args.len() { &args[0] } else { "" };
+    let result = execute(request);
     if let Err(e) = result {
-        println!("{}", e);
+        println!("[ERROR] {}", e);
         return;
     }
     println!("Hello, world!");
