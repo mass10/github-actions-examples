@@ -43,10 +43,11 @@ jobs:
 
             go run main.go
 
-            # git pull
 
             git add .
 
             git commit -m "adding tmp files by github action job"
+
+            git pull
 
             git push origin HEAD:${GITHUB_REF}
