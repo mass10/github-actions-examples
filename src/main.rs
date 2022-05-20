@@ -1,5 +1,6 @@
-use std::{fs::File, error::Error};
+use std::{error::Error, fs::File};
 
+/// コマンドを実行する
 fn spawn_os_command(command: &str) -> Result<(), Box<dyn Error>> {
     let output = std::process::Command::new("cmd")
         .args(&["/C", command])
@@ -12,6 +13,7 @@ fn spawn_os_command(command: &str) -> Result<(), Box<dyn Error>> {
     return Ok(());
 }
 
+/// テキストファイルを作成する
 fn create_text_file(path: &str, content: &str) -> Result<(), Box<dyn Error>> {
     use std::io::Write;
 
@@ -21,18 +23,27 @@ fn create_text_file(path: &str, content: &str) -> Result<(), Box<dyn Error>> {
     return Ok(());
 }
 
-fn get_current_timestamp() -> String {
-    use std::time::SystemTime;
-
-    let timestamp = SystemTime::now()
-        .duration_since(SystemTime::UNIX_EPOCH)
-        .expect("Time went backwards");
-
-    return format!("{}", timestamp.as_secs());
+/// タイムスタンプ文字列を返します。
+///
+/// # Returns
+/// タイムスタンプ
+pub fn get_current_timestamp() -> String {
+    let date = chrono::Local::now();
+    return format!("{}", date.format("%Y-%m-%d %H:%M:%S%.3f"));
 }
 
+/// タイムスタンプ文字列を返します。
+///
+/// # Returns
+/// タイムスタンプ
+pub fn get_current_timestamp2() -> String {
+    let date = chrono::Local::now();
+    return format!("{}", date.format("%Y%m%d-%H%M%S%"));
+}
+
+/// ブランチを作成します。
 fn make_branch() -> Result<(), Box<dyn Error>> {
-    let timestamp = get_current_timestamp();
+    let timestamp = get_current_timestamp2();
 
     {
         println!("[INFO] Making branch...");
@@ -40,13 +51,16 @@ fn make_branch() -> Result<(), Box<dyn Error>> {
         let command = format!("git checkout -b feature/new-feature-{}", &timestamp);
         spawn_os_command(&command)?;
 
-        let command = format!("git push --set-upstream origin feature/new-feature-{}", &timestamp);
+        let command = format!(
+            "git push --set-upstream origin feature/new-feature-{}",
+            &timestamp
+        );
         spawn_os_command(&command)?;
     }
 
     {
         println!("[INFO] Modifying a file...");
-         create_text_file("timestamp.tmp", &timestamp)?;
+        create_text_file("timestamp.tmp", &timestamp)?;
     }
 
     {
@@ -64,15 +78,17 @@ fn make_branch() -> Result<(), Box<dyn Error>> {
     return Ok(());
 }
 
+/// 要求に応じたバッチ処理を実行します。
 fn execute(request: &str) -> Result<(), Box<dyn Error>> {
+    if request == "1" {
+        return make_branch();
+    }
 
-    make_branch()?;
-
-    return Ok(());
+    panic!("Invalid request: {}", request);
 }
 
+/// アプリケーションのエントリポイントです。
 fn main() {
-
     let args = std::env::args().skip(1).collect::<Vec<_>>();
     if args.len() == 0 {
         return;
