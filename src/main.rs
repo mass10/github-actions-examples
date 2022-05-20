@@ -1,4 +1,4 @@
-use std::{error::Error, fs::File, thread::spawn};
+use std::{error::Error, fs::File};
 
 fn getenv(name: &str) -> String {
 	return std::env::var(name).unwrap_or_default();
@@ -10,8 +10,8 @@ fn spawn_os_command(command: &[&str]) -> Result<(), Box<dyn Error>> {
 
 	// let mut parameters = [];
 	// parameters.copy_from_slice(&command);
-    // parameters.insert(0, "sh");
-    // println!("[DEBUG] command: {:?}", parameters);
+	// parameters.insert(0, "sh");
+	// println!("[DEBUG] command: {:?}", parameters);
 
 	let output = std::process::Command::new("cmd").arg("/C").args(command).output()?;
 
@@ -104,8 +104,8 @@ fn execute_when_push() -> Result<(), Box<dyn Error>> {
 }
 
 fn execute_test() -> Result<(), Box<dyn Error>> {
-    spawn_os_command(&["git", "checkout", "main"])?;
-    return Ok(());
+	spawn_os_command(&["git", "checkout", "main"])?;
+	return Ok(());
 }
 
 /// 要求に応じたバッチ処理を実行します。
@@ -116,9 +116,9 @@ fn execute(request: &str) -> Result<(), Box<dyn Error>> {
 	if request == "--push" {
 		return execute_when_push();
 	}
-    if request == "--test" {
-        return execute_test();
-    }
+	if request == "--test" {
+		return execute_test();
+	}
 
 	panic!("ERROR: Invalid request: {}", request);
 }
@@ -133,5 +133,5 @@ fn main() {
 		return;
 	}
 
-    println!("Ok.");
+	println!("Ok.");
 }
