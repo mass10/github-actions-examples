@@ -1,12 +1,6 @@
 # github-actions-examples
-GitHub Actions の練習
+　GitHub Actions の練習
 
-
-
-jlkjlkasd
-
-xxxx
-
-
-ppp
-xx
+# /batches/20-generate-tmp/
+　Draft または Pull Request を作成したときに、作業ブランチのファイルに変更を加えます。
+ 
