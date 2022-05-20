@@ -1,0 +1,63 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+    # Triggers the workflow on push or pull request events but only for the main branch
+    pull_request:
+        types: "opened"
+
+    # Allows you to run this workflow manually from the Actions tab
+    workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+    # This workflow contains a single job called "build"
+    build:
+        # The type of runner that the job will run on
+        runs-on: ubuntu-latest
+
+        # Steps represent a sequence of tasks that will be executed as part of the job
+        steps:
+            # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+          - uses: actions/checkout@v3
+            with:
+                ref: ${{ github.event.pull_request.head.ref }}
+
+            # Runs a single command using the runners shell
+          - name: Run a one-line script
+            run: |
+                echo GITHUB_TOKEN: [$GITHUB_TOKEN]
+                echo GITHUB_REPOSITORY: [$GITHUB_REPOSITORY]
+                echo GITHUB_ACTOR: [$GITHUB_ACTOR]
+                echo GITHUB_REF: [$GITHUB_REF]
+
+            # Runs a set of commands using the runners shell
+          - name: Run a multi-line script
+            run: |
+                find . -type f | xargs /bin/ls -ldF --full-time
+
+          - name: Add tmp file
+            working-directory: batches/20-generate-tmp/
+            run: |
+                go run main.go
+
+          - name: Add tmp file
+            run: |
+
+                # いらない？
+                git remote set-url origin https://github-actions:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}
+                git config --global user.name "${GITHUB_ACTOR}"
+                git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+
+                git add .
+
+                git commit -m "adding tmp files by github action job"
+
+                # git pull origin HEAD:${GITHUB_REF}
+
+                # git push origin HEAD:${GITHUB_REF}
+                git push
+
+                # git push origin HEAD:${GITHUB_REF#refs/heads/}
