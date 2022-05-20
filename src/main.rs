@@ -1,4 +1,4 @@
-use std::{error::Error, fs::File};
+use std::{error::Error, fs::File, thread::spawn};
 
 fn getenv(name: &str) -> String {
 	return std::env::var(name).unwrap_or_default();
@@ -8,11 +8,12 @@ fn getenv(name: &str) -> String {
 fn spawn_os_command(command: &[&str]) -> Result<(), Box<dyn Error>> {
 	println!("[DEBUG] コマンドを実行中... [{}]", &command.join(" "));
 
-	let parameters = [];
-	parameters.join("/C");
-	parameters.copy_from_slice(&command);
+	// let mut parameters = [];
+	// parameters.copy_from_slice(&command);
+    // parameters.insert(0, "sh");
+    // println!("[DEBUG] command: {:?}", parameters);
 
-	let output = std::process::Command::new("cmd").args(&parameters).output()?;
+	let output = std::process::Command::new("cmd").arg("/C").args(command).output()?;
 
 	println!("status: {}", output.status);
 	println!("stdout: {}", String::from_utf8_lossy(&output.stdout));
@@ -77,7 +78,6 @@ fn make_branch() -> Result<(), Box<dyn Error>> {
 }
 
 fn execute_when_push() -> Result<(), Box<dyn Error>> {
-
 	let github_token = getenv("GITHUB_TOKEN");
 	let github_repository = getenv("GITHUB_REPOSITORY");
 	let github_actor = getenv("GITHUB_ACTOR");
@@ -89,8 +89,8 @@ fn execute_when_push() -> Result<(), Box<dyn Error>> {
 	);
 	spawn_os_command(&["git", "remote", "set-url", "origin", &url])?;
 
-    spawn_os_command(&["git", "config", "--global", "user.name", &github_actor])?;
-    
+	spawn_os_command(&["git", "config", "--global", "user.name", &github_actor])?;
+
 	let mail = format!("{GITHUB_ACTOR}@users.noreply.github.com", GITHUB_ACTOR = github_actor);
 	spawn_os_command(&["git", "config", "--global", "user.email", &mail])?;
 
@@ -103,6 +103,11 @@ fn execute_when_push() -> Result<(), Box<dyn Error>> {
 	return Ok(());
 }
 
+fn execute_test() -> Result<(), Box<dyn Error>> {
+    spawn_os_command(&["git", "checkout", "main"])?;
+    return Ok(());
+}
+
 /// 要求に応じたバッチ処理を実行します。
 fn execute(request: &str) -> Result<(), Box<dyn Error>> {
 	if request == "1" {
@@ -111,6 +116,9 @@ fn execute(request: &str) -> Result<(), Box<dyn Error>> {
 	if request == "--push" {
 		return execute_when_push();
 	}
+    if request == "--test" {
+        return execute_test();
+    }
 
 	panic!("ERROR: Invalid request: {}", request);
 }
@@ -124,5 +132,6 @@ fn main() {
 		println!("[ERROR] {}", e);
 		return;
 	}
-	println!("Hello, world!");
+
+    println!("Ok.");
 }
