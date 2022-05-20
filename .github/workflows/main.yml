@@ -32,7 +32,7 @@ jobs:
         run: |
           find . -type f | xargs /bin/ls -ldF --full-time
 
-      - name: Set assignees
+      - name: Add tmp file
         working-directory: batches/20-generate-tmp/
         run: |
             go run main.go
