@@ -1,0 +1,29 @@
+name: Pull Request を自動的にアサインする
+
+on:
+    pull_request:
+        # Pull Request もしくは Draft を作成したときに動かします。
+        types: "opened"
+
+jobs:
+
+    # ========== 自動的にアサインする ==========
+    assign:
+        name: Set assignees
+        runs-on: ubuntu-latest
+        steps:
+            # ========== SHELL SCRIPT ==========
+          - name: Set assignees
+            env:
+                # 誰にアサインするのか
+                ASSIGNEES: "${{ github.actor }}"
+            run: |
+                assignee_count=$(cat ${{ github.event_path }} | jq '.pull_request.assignees | length')
+                if [[ 0 == $assignee_count ]]; then
+                    assignees=$(echo "\"${ASSIGNEES// /}\"" | jq 'split(",")')
+                    curl -X POST \
+                         -H "Content-Type: application/json" \
+                         -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                         -d "{ \"assignees\": $assignees }" \
+                         https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/assignees
+                fi
