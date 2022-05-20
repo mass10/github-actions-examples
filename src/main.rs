@@ -36,9 +36,12 @@ fn make_branch() -> Result<(), Box<dyn Error>> {
 
     {
         println!("[INFO] Making branch...");
+
         let command = format!("git checkout -b feature/new-feature-{}", &timestamp);
         spawn_os_command(&command)?;
-        spawn_os_command("git push --set-upstream origin develop")?;
+
+        let command = format!("git push --set-upstream origin feature/new-feature-{}", &timestamp);
+        spawn_os_command(&command)?;
     }
 
     {
@@ -48,8 +51,11 @@ fn make_branch() -> Result<(), Box<dyn Error>> {
 
     {
         println!("[INFO] Commiting a file...");
+
         spawn_os_command("git add timestamp.tmp")?;
+
         spawn_os_command("git commit -m wip")?;
+
         spawn_os_command("git push")?;
     }
 
@@ -59,11 +65,6 @@ fn make_branch() -> Result<(), Box<dyn Error>> {
 fn execute(request: &str) -> Result<(), Box<dyn Error>> {
 
     make_branch()?;
-
-    // let mut response = String::new();
-    // let mut file = File::open(request)?;
-    // file.read_to_string(&mut response)?;
-    // println!("{}", response);
 
     return Ok(());
 }
