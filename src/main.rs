@@ -17,7 +17,8 @@ fn spawn_os_command(command: &[&str]) -> Result<(), Box<dyn Error>> {
 	} else {
 		println!("SH> [{}]", &command.join(" "));
 
-		let mut output = std::process::Command::new("sh").arg("-c").args(command).spawn()?;
+		let mut output = std::process::Command::new(command[0]).args(&command[1..]).spawn()?;
+		// let mut output = std::process::Command::new("sh").arg("-c").args(command).spawn()?;
 		let status = output.wait()?;
 		if !status.success() {
 			let exit_code = status.code().unwrap();
