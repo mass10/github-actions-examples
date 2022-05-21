@@ -64,24 +64,25 @@ pub fn get_current_timestamp2() -> String {
 
 /// ブランチを作成します。
 fn make_branch() -> Result<(), Box<dyn Error>> {
+    // システムのタイムスタンプ
 	let timestamp = get_current_timestamp2();
-
-	println!("[INFO] Making branch...");
+    // 一時的なブランチ名
 	let branch_name = format!("feature/new-feature-{}", &timestamp);
-	execute_command(&["git", "checkout", "-b", &branch_name])?;
+
+    // ブランチを作成して切り替え
+    println!("[INFO] Making branch...");
+    execute_command(&["git", "checkout", "-b", &branch_name])?;
 	execute_command(&["git", "push", "--set-upstream", "origin", &branch_name])?;
 
+    // ファイルを追加して
 	println!("[INFO] Modifying a file...");
 	create_text_file("timestamp.tmp", &timestamp)?;
 
+    // リポジトリーに push
 	println!("[INFO] Commiting a file...");
-
 	execute_command(&["git", "add", "timestamp.tmp"])?;
-
 	execute_command(&["git", "commit", "-m", "wip"])?;
-
 	execute_command(&["git", "push"])?;
-
 	execute_command(&["git", "checkout", "main"])?;
 
 	return Ok(());
