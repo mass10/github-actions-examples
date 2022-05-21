@@ -5,7 +5,7 @@ fn getenv(name: &str) -> String {
 }
 
 /// コマンドを実行する
-fn spawn_os_command(command: &[&str]) -> Result<(), Box<dyn Error>> {
+fn execute_command(command: &[&str]) -> Result<(), Box<dyn Error>> {
 	if cfg!(target_os = "windows") {
 		println!("CMD> [{}]", &command.join(" "));
 
@@ -68,31 +68,34 @@ fn make_branch() -> Result<(), Box<dyn Error>> {
 
 	println!("[INFO] Making branch...");
 	let branch_name = format!("feature/new-feature-{}", &timestamp);
-	spawn_os_command(&["git", "checkout", "-b", &branch_name])?;
-	spawn_os_command(&["git", "push", "--set-upstream", "origin", &branch_name])?;
+	execute_command(&["git", "checkout", "-b", &branch_name])?;
+	execute_command(&["git", "push", "--set-upstream", "origin", &branch_name])?;
 
 	println!("[INFO] Modifying a file...");
 	create_text_file("timestamp.tmp", &timestamp)?;
 
 	println!("[INFO] Commiting a file...");
 
-	spawn_os_command(&["git", "add", "timestamp.tmp"])?;
+	execute_command(&["git", "add", "timestamp.tmp"])?;
 
-	spawn_os_command(&["git", "commit", "-m", "wip"])?;
+	execute_command(&["git", "commit", "-m", "wip"])?;
 
-	spawn_os_command(&["git", "push"])?;
+	execute_command(&["git", "push"])?;
 
-	spawn_os_command(&["git", "checkout", "main"])?;
+	execute_command(&["git", "checkout", "main"])?;
 
 	return Ok(());
 }
 
+/// 変更のあったファイルを現在のブランチに追加して push します。
 fn execute_when_push() -> Result<(), Box<dyn Error>> {
 	let github_token = getenv("GITHUB_TOKEN");
 	println!("[DEBUG] token: {}", github_token);
-	let github_repository = getenv("GITHUB_REPOSITORY");
+
+    let github_repository = getenv("GITHUB_REPOSITORY");
 	println!("[DEBUG] github_repository: {}", github_repository);
-	let github_actor = getenv("GITHUB_ACTOR");
+
+    let github_actor = getenv("GITHUB_ACTOR");
 	println!("[DEBUG] github_actor: {}", github_actor);
 
 	let url = format!(
@@ -101,24 +104,24 @@ fn execute_when_push() -> Result<(), Box<dyn Error>> {
 		GITHUB_REPOSITORY = github_repository
 	);
 	println!("[DEBUG] url: {}", url);
-	spawn_os_command(&["git", "remote", "set-url", "origin", &url])?;
+	execute_command(&["git", "remote", "set-url", "origin", &url])?;
 
-	spawn_os_command(&["git", "config", "--global", "user.name", &github_actor])?;
+	execute_command(&["git", "config", "--global", "user.name", &github_actor])?;
 
 	let mail = format!("{GITHUB_ACTOR}@users.noreply.github.com", GITHUB_ACTOR = github_actor);
-	spawn_os_command(&["git", "config", "--global", "user.email", &mail])?;
+	execute_command(&["git", "config", "--global", "user.email", &mail])?;
 
-	spawn_os_command(&["git", "add", "."])?;
+	execute_command(&["git", "add", "."])?;
 
-	spawn_os_command(&["git", "commit", "-m", "add tmp"])?;
+	execute_command(&["git", "commit", "-m", "add tmp"])?;
 
-	spawn_os_command(&["git", "push"])?;
+	execute_command(&["git", "push"])?;
 
 	return Ok(());
 }
 
 fn execute_test() -> Result<(), Box<dyn Error>> {
-	spawn_os_command(&["git", "checkout", "main"])?;
+	execute_command(&["git", "checkout", "main"])?;
 	return Ok(());
 }
 
