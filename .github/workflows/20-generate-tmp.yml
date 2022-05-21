@@ -30,7 +30,7 @@ jobs:
                 ref: ${{ github.event.pull_request.head.ref }}
 
             # Runs a single command using the runners shell
-          - name: Run a one-line script
+          - name: 環境の確認
             run: |
                 uname --all
 
@@ -39,25 +39,11 @@ jobs:
                 echo GITHUB_ACTOR: [$GITHUB_ACTOR]
                 echo GITHUB_REF: [$GITHUB_REF]
 
-            # Runs a set of commands using the runners shell
-          - name: Run a multi-line script
-            run: |
-                find . -type f | xargs /bin/ls -ldF --full-time
-
-          - name: Add tmp file
+          - name: Geenrate tmp file
             working-directory: batches/20-generate-tmp/
             run: |
                 go run main.go
 
-          - name: Add tmp file
+          - name: 現在のブランチにファイルを追加します
             run: |
-
-                # いらない？
-                # git remote set-url origin https://github-actions:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}
-                # git config --global user.name "${GITHUB_ACTOR}"
-                # git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-                # git add .
-                # git commit -m "adding tmp files by github action job"
-                # git push
                 cargo run -- --push
-                # . affect.sh
