@@ -44,7 +44,7 @@ func copyFile(src string, dest string) {
 		panic(err)
 	}
 
-	fmt.Println(n, "bytes copied.")
+	fmt.Println("[INFO]", n, "bytes copied.")
 }
 
 func main() {
