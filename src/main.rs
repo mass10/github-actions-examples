@@ -104,7 +104,10 @@ fn execute_when_push() -> Result<(), Box<dyn Error>> {
 	println!("[DEBUG] github_actor: {}", github_actor);
 	println!("[DEBUG] url: {}", url);
 
-	execute_command(&["git", "remote", "set-url", "origin", &url])?; // 本当に必要？
+    // NOTE:
+    // ※git コマンドは sh -c を挟むとダメなので直接実行する。
+
+    execute_command(&["git", "remote", "set-url", "origin", &url])?; // 本当に必要？
 	execute_command(&["git", "config", "--global", "user.name", &github_actor])?;
 	execute_command(&["git", "config", "--global", "user.email", &mail])?;
 	execute_command(&["git", "add", "."])?;
