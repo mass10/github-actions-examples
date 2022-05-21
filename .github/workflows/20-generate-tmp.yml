@@ -60,3 +60,8 @@ jobs:
                 # git commit -m "adding tmp files by github action job"
                 # git push
                 cargo run -- --push
+
+          - name: Add tmp file 2
+            run: |
+                . affect.sh
+
