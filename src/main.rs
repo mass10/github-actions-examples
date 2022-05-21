@@ -90,31 +90,25 @@ fn make_branch() -> Result<(), Box<dyn Error>> {
 /// 変更のあったファイルを現在のブランチに追加して push します。
 fn execute_when_push() -> Result<(), Box<dyn Error>> {
 	let github_token = getenv("GITHUB_TOKEN");
-	println!("[DEBUG] token: {}", github_token);
-
 	let github_repository = getenv("GITHUB_REPOSITORY");
-	println!("[DEBUG] github_repository: {}", github_repository);
-
 	let github_actor = getenv("GITHUB_ACTOR");
-	println!("[DEBUG] github_actor: {}", github_actor);
-
 	let url = format!(
 		"https://github-actions:{GITHUB_TOKEN}@github.com/{GITHUB_REPOSITORY}",
 		GITHUB_TOKEN = github_token,
 		GITHUB_REPOSITORY = github_repository
 	);
-	println!("[DEBUG] url: {}", url);
-	execute_command(&["git", "remote", "set-url", "origin", &url])?;
-
-	execute_command(&["git", "config", "--global", "user.name", &github_actor])?;
-
 	let mail = format!("{GITHUB_ACTOR}@users.noreply.github.com", GITHUB_ACTOR = github_actor);
+
+	println!("[DEBUG] token: {}", github_token);
+	println!("[DEBUG] github_repository: {}", github_repository);
+	println!("[DEBUG] github_actor: {}", github_actor);
+	println!("[DEBUG] url: {}", url);
+
+	execute_command(&["git", "remote", "set-url", "origin", &url])?; // 本当に必要？
+	execute_command(&["git", "config", "--global", "user.name", &github_actor])?;
 	execute_command(&["git", "config", "--global", "user.email", &mail])?;
-
 	execute_command(&["git", "add", "."])?;
-
 	execute_command(&["git", "commit", "-m", "add tmp"])?;
-
 	execute_command(&["git", "push"])?;
 
 	return Ok(());
