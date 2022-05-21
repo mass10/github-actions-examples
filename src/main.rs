@@ -9,11 +9,13 @@ fn spawn_os_command(command: &[&str]) -> Result<(), Box<dyn Error>> {
 	if cfg!(target_os = "windows") {
 		println!("CMD> [{}]", &command.join(" "));
 
-		let output = std::process::Command::new("cmd").arg("/C").args(command).output()?;
-
-		println!("status: {}", output.status);
-		println!("stdout: {}", String::from_utf8_lossy(&output.stdout));
-		println!("stderr: {}", String::from_utf8_lossy(&output.stderr));
+		let mut process = std::process::Command::new("cmd").arg("/C").args(command).spawn()?;
+		let status = process.wait()?;
+		if !status.success() {
+			let exit_code = status.code().unwrap();
+			println!("[ERROR] command exited with status: {}", exit_code);
+			std::process::exit(1);
+		}
 	} else {
 		println!("SH> [{}]", &command.join(" "));
 
