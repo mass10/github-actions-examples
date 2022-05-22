@@ -64,21 +64,21 @@ pub fn get_current_timestamp2() -> String {
 
 /// ブランチを作成します。
 fn make_branch() -> Result<(), Box<dyn Error>> {
-    // システムのタイムスタンプ
+	// システムのタイムスタンプ
 	let timestamp = get_current_timestamp2();
-    // 一時的なブランチ名
+	// 一時的なブランチ名
 	let branch_name = format!("feature/new-feature-{}", &timestamp);
 
-    // ブランチを作成して切り替え
-    println!("[INFO] Making branch...");
-    execute_command(&["git", "checkout", "-b", &branch_name])?;
+	// ブランチを作成して切り替え
+	println!("[INFO] Making branch...");
+	execute_command(&["git", "checkout", "-b", &branch_name])?;
 	execute_command(&["git", "push", "--set-upstream", "origin", &branch_name])?;
 
-    // ファイルを追加して
+	// ファイルを追加して
 	println!("[INFO] Modifying a file...");
 	create_text_file("timestamp.tmp", &timestamp)?;
 
-    // リポジトリーに push
+	// リポジトリーに push
 	println!("[INFO] Commiting a file...");
 	execute_command(&["git", "add", "timestamp.tmp"])?;
 	execute_command(&["git", "commit", "-m", "wip"])?;
@@ -105,7 +105,7 @@ fn execute_when_push() -> Result<(), Box<dyn Error>> {
 	println!("[DEBUG] github_actor: {}", github_actor);
 	println!("[DEBUG] url: {}", url);
 
-    execute_command(&["git", "remote", "set-url", "origin", &url])?; // 本当に必要？
+	execute_command(&["git", "remote", "set-url", "origin", &url])?; // 本当に必要？
 	execute_command(&["git", "config", "--global", "user.name", &github_actor])?;
 	execute_command(&["git", "config", "--global", "user.email", &mail])?;
 	execute_command(&["git", "add", "."])?;
