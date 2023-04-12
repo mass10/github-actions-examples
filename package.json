@@ -1,0 +1,13 @@
+{
+  "name": "github-actions-examples",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/mass10/github-actions-examples.git",
+  "author": "Irisawa Masaru <irisawa.masaru@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^18.15.11",
+    "@types/typescript": "^2.0.0",
+    "typescript": "^5.0.4"
+  }
+}
