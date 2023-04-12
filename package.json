@@ -4,6 +4,11 @@
   "main": "index.js",
   "repository": "https://github.com/mass10/github-actions-examples.git",
   "author": "Irisawa Masaru <irisawa.masaru@gmail.com>",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^18.15.11",
