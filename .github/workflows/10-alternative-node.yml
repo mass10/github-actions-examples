@@ -1,0 +1,50 @@
+#
+# 複数バージョンの Node.js でビルドするテストです。
+
+
+name: Manual Deploy
+on:
+    workflow_dispatch:
+        inputs:
+            branch:
+                description: 'Branch to deploy'
+                required: true
+                default: 'main'
+
+jobs:
+    deploy:
+        runs-on: windows-latest
+        environment: ${{ github.event.inputs.environment }}
+        steps:
+
+            # STEP: リソースをチェックアウトします。
+          - name: Checkout
+            uses: actions/checkout@v5
+            with:
+                ref: ${{ github.event.inputs.branch }}
+            
+            # STEP: Node.js 14.x をセットアップします。
+          - name: Setup Node.js 14.x
+            uses: actions/setup-node@v2
+            with:
+                node-version: 14.x
+
+            # STEP: Node.js 14.x でビルドします。
+          - name: Build with Node.js 14.x
+            run: |
+                npm install
+                npm run build
+
+            # STEP: Node.js 16.x をセットアップします。
+          - name: Setup Node.js 16.x
+            uses: actions/setup-node@v2
+            with:
+                node-version: 16.x
+
+            # STEP: Node.js 16.x でビルドします。
+          - name: Build with Node.js 16.x
+            run: |
+                npm install
+                npm run build
+
+            # STEP: リソースをチェックアウトします。
