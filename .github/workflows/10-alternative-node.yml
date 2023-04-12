@@ -32,8 +32,9 @@ jobs:
             # STEP: Node.js 14.x でビルドします。
           - name: Build with Node.js 14.x
             run: |
-                npm install
-                npm run build
+                node --version
+                yarn install
+                yarn run build
 
             # STEP: Node.js 16.x をセットアップします。
           - name: Setup Node.js 16.x
@@ -44,7 +45,6 @@ jobs:
             # STEP: Node.js 16.x でビルドします。
           - name: Build with Node.js 16.x
             run: |
-                npm install
-                npm run build
+                node --version
 
             # STEP: リソースをチェックアウトします。
