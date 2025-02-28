@@ -33,3 +33,5 @@ jobs:
                 echo "#############################################"
                 echo "# JOB FOR MAIN BRANCH"
                 echo "#############################################"
+                echo closed: [${{ github.event.pull_request.closed }}]
+                echo merged: [${{ github.event.pull_request.merged }}]
