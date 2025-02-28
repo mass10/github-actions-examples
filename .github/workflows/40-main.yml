@@ -28,7 +28,7 @@ jobs:
                 ref: ${{ github.event.pull_request.head.ref }}
 
             # Runs a single command using the runners shell
-          - name: 環境の確認
+          - name: BANNER
             run: |
                 echo "#############################################"
                 echo "# JOB FOR MAIN BRANCH"

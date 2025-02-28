@@ -27,6 +27,12 @@ jobs:
                 ref: ${{ github.event.pull_request.head.ref }}
 
             # Runs a single command using the runners shell
-          - name: 環境の確認
+          - name: 環境の確認(1)
+            run: |
+                echo closed: [${{ github.event.pull_request.closed }}]
+                echo merged: [${{ github.event.pull_request.merged }}]
+
+            # Runs a single command using the runners shell
+          - name: 環境の確認(2)
             run: |
                 env
